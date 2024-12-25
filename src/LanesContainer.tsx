@@ -2,6 +2,7 @@ import { ADD_BOARD_DIALOG_HEIGHT } from "./AddBoardDialog";
 import { useBoardContent } from "./useBoardContent";
 import { useBoardContext } from "./BoardContext";
 import { formatDate } from "./formatDate";
+import { DragEvent } from "react";
 
 export function LanesContainer() {
   const { boardContext } = useBoardContext();
@@ -30,6 +31,25 @@ function Lane(props: TLaneProps) {
   const { boardContext } = useBoardContext();
   const { boardContent, isLoading, loadMore } = useBoardContent(props.board);
 
+  function onDragStart(event: DragEvent<HTMLDivElement>) {
+    event.dataTransfer.setData("text/plain", props.board);
+  }
+
+  function onDragEnter(event: DragEvent<HTMLDivElement>) {
+    event.preventDefault();
+  }
+
+  function onDragOver(event: DragEvent<HTMLDivElement>) {
+    event.preventDefault();
+  }
+
+  function onDrop(event: DragEvent<HTMLDivElement>) {
+    const board = event.dataTransfer.getData("text/plain");
+    if (board !== props.board) {
+      boardContext.reorderBoard(board, props.board);
+    }
+  }
+
   return (
     <div
       className="Lane"
@@ -40,6 +60,11 @@ function Lane(props: TLaneProps) {
         borderRight: "1px solid var(--neutral-60)",
         overflowY: "scroll",
       }}
+      draggable
+      onDragStart={onDragStart}
+      onDragEnter={onDragEnter}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
     >
       <div
         style={{
@@ -63,7 +88,7 @@ function Lane(props: TLaneProps) {
         </button>
       </div>
 
-      <div>
+      <div style={{ backgroundColor: "var(--neutral-90)" }}>
         {boardContent.length > 0
           ? boardContent.map((item) => (
               <div key={item.name}>

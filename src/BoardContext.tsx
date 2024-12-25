@@ -13,6 +13,7 @@ type TBoardContext = {
   boards: string[];
   addBoard: (board: string) => void;
   removeBoard: (board: string) => void;
+  reorderBoard: (from: string, to: string) => void;
 };
 
 type TBoardContextProviderProps = {
@@ -44,6 +45,21 @@ export function BoardContextProvider(props: TBoardContextProviderProps) {
     []
   );
 
+  const reorderBoard = useCallback(
+    (from: string, to: string) =>
+      setBoards((prevBoards) => {
+        const boards = [...prevBoards];
+        const fromIndex = boards.indexOf(from);
+        const toIndex = boards.indexOf(to);
+
+        boards.splice(fromIndex, 1);
+        boards.splice(toIndex, 0, from);
+
+        return boards;
+      }),
+    []
+  );
+
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(boards));
   }, [boards]);
@@ -54,6 +70,7 @@ export function BoardContextProvider(props: TBoardContextProviderProps) {
         boards,
         addBoard,
         removeBoard,
+        reorderBoard,
       }}
     >
       {props.children}
