@@ -1,6 +1,6 @@
 import { ADD_BOARD_DIALOG_HEIGHT } from "./AddBoardDialog";
-import { useBoardContent } from "./useBoardContent";
-import { useBoardContext } from "./BoardContext";
+import { useBoardContent } from "./api/useBoardContent";
+import { useBoardContext } from "./context/useBoardContext";
 import { formatDate } from "./formatDate";
 import { DragEvent } from "react";
 

@@ -1,26 +1,11 @@
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
+import { BoardContext } from "./BoardContext";
 
 const LOCAL_STORAGE_KEY = "@felipeog/rm-reddit-client/boards";
-
-type TBoardContext = {
-  boards: string[];
-  addBoard: (board: string) => void;
-  removeBoard: (board: string) => void;
-  reorderBoard: (from: string, to: string) => void;
-};
 
 type TBoardContextProviderProps = {
   children: ReactNode;
 };
-
-const BoardContext = createContext<TBoardContext>(null! as TBoardContext);
 
 export function BoardContextProvider(props: TBoardContextProviderProps) {
   const [boards, setBoards] = useState<string[]>(() => {
@@ -76,16 +61,4 @@ export function BoardContextProvider(props: TBoardContextProviderProps) {
       {props.children}
     </BoardContext.Provider>
   );
-}
-
-export function useBoardContext() {
-  const boardContext = useContext(BoardContext);
-
-  if (!boardContext) {
-    throw new Error(
-      "useBoardContext has to be used within BoardContextProvider."
-    );
-  }
-
-  return { boardContext };
 }

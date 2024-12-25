@@ -1,6 +1,6 @@
 import { FormEvent, useRef, useState } from "react";
-import { useBoardContext } from "./BoardContext";
-import { useBoardExists } from "./useBoardExists";
+import { useBoardContext } from "./context/useBoardContext";
+import { useBoardExists } from "./api/useBoardExists";
 
 export const ADD_BOARD_DIALOG_HEIGHT = "40px";
 
@@ -8,16 +8,16 @@ export function AddBoardDialog() {
   const [board, setBoard] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const { checkBoardExistance, isLoading } = useBoardExists();
+  const { checkBoardExistence, isLoading } = useBoardExists();
   const { boardContext } = useBoardContext();
 
   async function handleFormSubmit(event: FormEvent) {
     event.preventDefault();
 
-    const doesBoardExist = await checkBoardExistance(board);
+    const doesBoardExist = await checkBoardExistence(board);
 
     if (!doesBoardExist) {
-      return alert("This board does not exist");
+      return alert("This board does not exist.");
     }
 
     boardContext.addBoard(board);
