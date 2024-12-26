@@ -2,7 +2,7 @@ import { FormEvent, useRef, useState } from "react";
 import { useBoardContext } from "./context/useBoardContext";
 import { useBoardExists } from "./api/useBoardExists";
 
-export const ADD_BOARD_DIALOG_HEIGHT = "40px";
+export const ADD_BOARD_DIALOG_HEIGHT = "50px";
 
 export function AddBoardDialog() {
   const [board, setBoard] = useState("");
@@ -36,44 +36,46 @@ export function AddBoardDialog() {
 
   return (
     <div
-      className="AddBoardDialog"
-      style={{
-        height: ADD_BOARD_DIALOG_HEIGHT,
-        display: "flex",
-        placeContent: "center",
-        padding: 8,
-        borderBottom: `1px solid var(--neutral-60)`,
-      }}
+      className="AddBoardDialog flex flex-wrap place-content-center border-b border-neutral-300 dark:border-neutral-700"
+      style={{ height: ADD_BOARD_DIALOG_HEIGHT }}
     >
-      <button onClick={openDialog}>Add board</button>
+      <button className="btn btn-sm" onClick={openDialog}>
+        Add board
+      </button>
 
-      <dialog
-        ref={dialogRef}
-        style={{
-          padding: "revert",
-          margin: "revert",
-          backgroundColor: "var(--neutral-90)",
-          color: "var(--neutral-10)",
-          borderColor: "var(--neutral-60)",
-        }}
-      >
-        <button onClick={closeDialog} disabled={isLoading}>
-          Close
-        </button>
+      <dialog className="modal" ref={dialogRef}>
+        <div className="modal-box">
+          <form method="dialog">
+            <button
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+              disabled={isLoading}
+            >
+              ✕
+            </button>
+          </form>
 
-        <form onSubmit={handleFormSubmit}>
-          <p>Enter the name of the board</p>
-          <input
-            ref={inputRef}
-            type="text"
-            name="board"
-            required
-            disabled={isLoading}
-            value={board}
-            onChange={(event) => setBoard(event.target.value)}
-          />
-          <button disabled={isLoading}>Add board</button>
-        </form>
+          <h3 className="font-bold text-lg">Add board</h3>
+          <p className="py-4">Enter the name of the board</p>
+
+          <form
+            className="flex justify-between gap-4"
+            onSubmit={handleFormSubmit}
+          >
+            <input
+              className="input input-bordered grow"
+              ref={inputRef}
+              type="text"
+              name="board"
+              required
+              disabled={isLoading}
+              value={board}
+              onChange={(event) => setBoard(event.target.value)}
+            />
+            <button className="btn shrink-0" disabled={isLoading}>
+              Add board
+            </button>
+          </form>
+        </div>
       </dialog>
     </div>
   );
