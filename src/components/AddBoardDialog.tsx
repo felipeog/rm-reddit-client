@@ -21,7 +21,6 @@ export function AddBoardDialog() {
 
     boardContext.addBoard(board);
     closeDialog();
-    setBoard("");
   }
 
   function openDialog() {
@@ -31,6 +30,7 @@ export function AddBoardDialog() {
 
   function closeDialog() {
     dialogRef.current?.close();
+    setBoard("");
   }
 
   return (
@@ -41,14 +41,13 @@ export function AddBoardDialog() {
 
       <dialog className="modal" ref={dialogRef}>
         <div className="modal-box">
-          <form method="dialog">
-            <button
-              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-              disabled={isLoading}
-            >
-              ✕
-            </button>
-          </form>
+          <button
+            className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+            onClick={closeDialog}
+            disabled={isLoading}
+          >
+            ✕
+          </button>
 
           <h3 className="font-bold text-lg">Add board</h3>
           <p className="py-4">Enter the name of the board</p>
