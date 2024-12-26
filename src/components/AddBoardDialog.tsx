@@ -1,8 +1,7 @@
 import { FormEvent, useRef, useState } from "react";
 import { useBoardContext } from "../context/useBoardContext";
 import { useBoardExists } from "../api/useBoardExists";
-
-export const ADD_BOARD_DIALOG_HEIGHT = "50px";
+import { PlusIcon } from "@heroicons/react/24/solid";
 
 export function AddBoardDialog() {
   const [board, setBoard] = useState("");
@@ -35,12 +34,9 @@ export function AddBoardDialog() {
   }
 
   return (
-    <div
-      className="AddBoardDialog flex flex-wrap place-content-center border-b border-neutral-300 dark:border-neutral-700"
-      style={{ height: ADD_BOARD_DIALOG_HEIGHT }}
-    >
-      <button className="btn btn-sm" onClick={openDialog}>
-        Add board
+    <div className="AddBoardDialog w-[30vw] min-w-[350px]">
+      <button className="btn btn-circle m-4" onClick={openDialog}>
+        <PlusIcon className="size-6 " />
       </button>
 
       <dialog className="modal" ref={dialogRef}>

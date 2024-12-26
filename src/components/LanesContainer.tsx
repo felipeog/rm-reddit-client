@@ -1,20 +1,19 @@
-import { ADD_BOARD_DIALOG_HEIGHT } from "./AddBoardDialog";
+import { AddBoardDialog } from "./AddBoardDialog";
+import { ChevronUpIcon, EllipsisVerticalIcon } from "@heroicons/react/24/solid";
+import { DragEvent } from "react";
 import { useBoardContent } from "../api/useBoardContent";
 import { useBoardContext } from "../context/useBoardContext";
-import { DragEvent } from "react";
-import { ChevronUpIcon, EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 
 export function LanesContainer() {
   const { boardContext } = useBoardContext();
 
   return (
-    <div
-      className="LanesContainer flex overflow-x-scroll"
-      style={{ height: `calc(100vh - ${ADD_BOARD_DIALOG_HEIGHT})` }}
-    >
+    <div className="LanesContainer h-dvh flex overflow-x-scroll">
       {boardContext.boards.map((board) => (
         <Lane key={board} board={board} />
       ))}
+
+      <AddBoardDialog />
     </div>
   );
 }
@@ -50,7 +49,7 @@ function Lane(props: TLaneProps) {
 
   return (
     <div
-      className="Lane w-[30vw] min-w-[30vw] h-full border-r border-neutral-300 dark:border-neutral-700 overflow-y-scroll"
+      className="Lane w-[30vw] min-w-[350px] h-full border-r border-neutral-300 dark:border-neutral-700 overflow-y-scroll"
       draggable
       onDragStart={onDragStart}
       onDragEnter={onDragEnter}
@@ -80,7 +79,7 @@ function Lane(props: TLaneProps) {
 
           <ul
             tabIndex={0}
-            className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+            className="dropdown-content menu bg-base-200 rounded-box z-[1] w-52 p-2 shadow"
           >
             <li>
               <button
