@@ -37,6 +37,10 @@ export function useBoardContent(board: string) {
     setSize((prevSize) => prevSize + 1);
   }, [setSize]);
 
+  const refresh = useCallback(() => {
+    setSize(1);
+  }, [setSize]);
+
   const boardContent = data?.reduce((acc: TData[], cur) => {
     const items = cur.data.children.map((children) => children.data);
     acc.push(...items);
@@ -45,6 +49,7 @@ export function useBoardContent(board: string) {
 
   return {
     loadMore,
+    refresh,
     isLoading: isLoading || isValidating,
     boardContent: boardContent || [],
   };
