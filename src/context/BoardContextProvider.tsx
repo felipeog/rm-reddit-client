@@ -53,6 +53,7 @@ export function BoardContextProvider(props: TBoardContextProviderProps) {
     <BoardContext.Provider
       value={{
         boards,
+        setBoards,
         addBoard,
         removeBoard,
         reorderBoard,
