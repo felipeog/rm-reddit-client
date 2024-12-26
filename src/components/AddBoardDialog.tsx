@@ -1,6 +1,6 @@
 import { FormEvent, useRef, useState } from "react";
-import { useBoardContext } from "./context/useBoardContext";
-import { useBoardExists } from "./api/useBoardExists";
+import { useBoardContext } from "../context/useBoardContext";
+import { useBoardExists } from "../api/useBoardExists";
 
 export const ADD_BOARD_DIALOG_HEIGHT = "50px";
 

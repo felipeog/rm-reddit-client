@@ -1,6 +1,6 @@
 import { ADD_BOARD_DIALOG_HEIGHT } from "./AddBoardDialog";
-import { useBoardContent } from "./api/useBoardContent";
-import { useBoardContext } from "./context/useBoardContext";
+import { useBoardContent } from "../api/useBoardContent";
+import { useBoardContext } from "../context/useBoardContext";
 import { DragEvent } from "react";
 import { ChevronUpIcon, EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 

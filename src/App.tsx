@@ -1,5 +1,5 @@
-import { AddBoardDialog } from "./AddBoardDialog";
-import { LanesContainer } from "./LanesContainer";
+import { AddBoardDialog } from "./components/AddBoardDialog";
+import { LanesContainer } from "./components/LanesContainer";
 
 export function App() {
   return (
