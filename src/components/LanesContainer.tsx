@@ -49,7 +49,7 @@ export function LanesContainer() {
   }
 
   return (
-    <div className="LanesContainer h-dvh flex">
+    <div className="LanesContainer h-dvh flex overflow-y-scroll">
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
