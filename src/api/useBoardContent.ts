@@ -5,10 +5,7 @@ type TData = {
   name: string;
   title: string;
   ups: number;
-  downs: number;
-  author: string;
   url: string;
-  created: number;
 };
 
 type TResponse = {
