@@ -1,7 +1,8 @@
-import { FormEvent, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { useBoardContext } from "../context/useBoardContext";
 import { useBoardExists } from "../api/useBoardExists";
 import { PlusIcon } from "@heroicons/react/24/solid";
+import { enqueueSnackbar } from "notistack";
 
 export function AddBoardDialog() {
   const [board, setBoard] = useState("");
@@ -10,27 +11,45 @@ export function AddBoardDialog() {
   const { checkBoardExistence, isLoading } = useBoardExists();
   const { boardContext } = useBoardContext();
 
-  async function handleFormSubmit(event: FormEvent) {
+  async function handleBoardFormSubmit(event: FormEvent) {
     event.preventDefault();
 
-    const doesBoardExist = await checkBoardExistence(board);
-
-    if (!doesBoardExist) {
-      return alert("This board does not exist.");
+    if (boardContext.boards.includes(board)) {
+      return enqueueSnackbar("This board has already been added.");
     }
 
-    boardContext.addBoard(board);
-    closeDialog();
+    try {
+      const doesBoardExist = await checkBoardExistence(board);
+
+      if (!doesBoardExist) {
+        return enqueueSnackbar("This board does not exist.");
+      }
+
+      boardContext.addBoard(board);
+      closeDialog();
+      enqueueSnackbar("Board added.");
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar("Error checking board existence.");
+    }
+  }
+
+  function handleDialogFormSubmit() {
+    setBoard("");
   }
 
   function openDialog() {
-    dialogRef.current?.showModal();
+    dialogRef.current?.show();
     inputRef.current?.focus();
   }
 
   function closeDialog() {
     dialogRef.current?.close();
     setBoard("");
+  }
+
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    setBoard(event.target.value);
   }
 
   return (
@@ -54,7 +73,7 @@ export function AddBoardDialog() {
 
           <form
             className="flex justify-between gap-4"
-            onSubmit={handleFormSubmit}
+            onSubmit={handleBoardFormSubmit}
           >
             <input
               className="input input-bordered grow"
@@ -64,13 +83,21 @@ export function AddBoardDialog() {
               required
               disabled={isLoading}
               value={board}
-              onChange={(event) => setBoard(event.target.value)}
+              onChange={handleInputChange}
             />
             <button className="btn shrink-0" disabled={isLoading}>
               Add board
             </button>
           </form>
         </div>
+
+        <form
+          method="dialog"
+          onSubmit={handleDialogFormSubmit}
+          className="modal-backdrop bg-neutral-950 opacity-60"
+        >
+          <button>Close dialog</button>
+        </form>
       </dialog>
     </div>
   );
