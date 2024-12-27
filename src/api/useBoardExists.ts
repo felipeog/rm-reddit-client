@@ -22,8 +22,7 @@ export function useBoardExists() {
 
         return exists;
       } catch (error) {
-        alert("Error checking board existence.");
-        console.error(error);
+        throw error;
       } finally {
         setIsLoading(false);
       }

@@ -8,6 +8,7 @@ import { useBoardContent } from "../api/useBoardContent";
 import { useBoardContext } from "../context/useBoardContext";
 import { defaultAnimateLayoutChanges, useSortable } from "@dnd-kit/sortable";
 import { useEffect, useRef } from "react";
+import { enqueueSnackbar } from "notistack";
 
 type TLaneProps = {
   board: string;
@@ -38,6 +39,11 @@ export function Lane(props: TLaneProps) {
 
     wrapperRef.current = wrapper;
     setNodeRef(wrapper);
+  }
+
+  function deleteBoard() {
+    boardContext.removeBoard(props.board);
+    enqueueSnackbar("Board deleted.");
   }
 
   useEffect(() => {
@@ -93,10 +99,7 @@ export function Lane(props: TLaneProps) {
               className="dropdown-content menu bg-base-200 rounded-box z-[1] w-52 p-2 shadow"
             >
               <li>
-                <button
-                  onClick={() => boardContext.removeBoard(props.board)}
-                  disabled={isLoading}
-                >
+                <button onClick={deleteBoard} disabled={isLoading}>
                   Delete
                 </button>
               </li>
