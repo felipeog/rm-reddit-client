@@ -38,6 +38,8 @@ export function useBoardContent(board: string) {
     setSize(1);
   }, [setSize]);
 
+  const hasMore =
+    Array.isArray(data) && data[data.length - 1].data.after !== null;
   const boardContent = data?.reduce((acc: TData[], cur) => {
     const items = cur.data.children.map((children) => children.data);
     acc.push(...items);
@@ -46,6 +48,7 @@ export function useBoardContent(board: string) {
 
   return {
     loadMore,
+    hasMore,
     refresh,
     isLoading: isLoading || isValidating,
     boardContent: boardContent || [],
