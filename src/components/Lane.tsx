@@ -18,9 +18,8 @@ export function Lane(props: TLaneProps) {
   const wrapperRef = useRef<HTMLElement>();
   const scrollRef = useRef(0);
   const { boardContext } = useBoardContext();
-  const { boardContent, isLoading, loadMore, refresh } = useBoardContent(
-    props.board
-  );
+  const { boardContent, isLoading, loadMore, hasMore, refresh } =
+    useBoardContent(props.board);
   const {
     attributes,
     listeners,
@@ -112,33 +111,40 @@ export function Lane(props: TLaneProps) {
       </div>
 
       <div className="px-4">
-        {boardContent.length > 0
-          ? boardContent.map((item) => (
-              <div
-                className="flex gap-4 items-center py-4 border-b border-neutral-300 dark:border-neutral-700"
-                key={item.name}
-              >
-                <div className="flex flex-col items-center">
-                  <ChevronUpIcon className="size-6" />
-                  <p className="text-center">{item.ups}</p>
-                </div>
-
-                <a
-                  className="link"
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {item.title}
-                </a>
+        {boardContent.length > 0 &&
+          boardContent.map((item) => (
+            <div
+              className="flex gap-4 items-center py-4 border-b border-neutral-300 dark:border-neutral-700"
+              key={item.name}
+            >
+              <div className="flex flex-col items-center">
+                <ChevronUpIcon className="size-6" />
+                <p className="text-center">{item.ups}</p>
               </div>
-            ))
-          : null}
+
+              <a
+                className="link"
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {item.title}
+              </a>
+            </div>
+          ))}
+
+        {!isLoading && boardContent.length <= 0 && (
+          <p className="py-4">No posts to show</p>
+        )}
       </div>
 
-      <button className="btn m-4" onClick={loadMore} disabled={isLoading}>
-        Load more
-      </button>
+      {hasMore && (
+        <button className="btn m-4" onClick={loadMore} disabled={isLoading}>
+          Load more
+        </button>
+      )}
+
+      {!isLoading && !hasMore && <p className="p-4">End of of the board</p>}
     </div>
   );
 }
