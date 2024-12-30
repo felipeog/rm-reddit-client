@@ -43,7 +43,7 @@ export function Lane(props: TLaneProps) {
 
   function deleteBoard() {
     boardContext.removeBoard(props.board);
-    enqueueSnackbar("Board deleted.");
+    enqueueSnackbar(`Board ${props.board} deleted.`);
   }
 
   useEffect(() => {

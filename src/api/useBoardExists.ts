@@ -7,7 +7,12 @@ export function useBoardExists() {
   const [isLoading, setIsLoading] = useState(false);
 
   const checkBoardExistence = useCallback(
-    async (board: string) => {
+    async (
+      board: string
+    ): Promise<{
+      exists: boolean;
+      error: string | null;
+    }> => {
       const key = `useBoardExists-${board}`;
 
       if (cache.get(key)) return cache.get(key)?.data;
@@ -16,13 +21,16 @@ export function useBoardExists() {
 
       try {
         const response = await fetcher(`/${board}.json`);
-        const exists = response?.error !== 404;
+        const error = Boolean(response?.error)
+          ? `${response.message}: ${response.reason}`
+          : null;
+        const exists = !error;
 
         await mutate(key, exists, false);
 
-        return exists;
+        return { exists, error };
       } catch (error) {
-        throw error;
+        return { exists: false, error: `Internal error.` };
       } finally {
         setIsLoading(false);
       }

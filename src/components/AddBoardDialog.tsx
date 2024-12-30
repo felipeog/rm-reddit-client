@@ -15,22 +15,22 @@ export function AddBoardDialog() {
     event.preventDefault();
 
     if (boardContext.boards.includes(board)) {
-      return enqueueSnackbar("This board has already been added.");
+      return enqueueSnackbar(`The board ${board} has already been added.`);
     }
 
     try {
-      const doesBoardExist = await checkBoardExistence(board);
+      const { error } = await checkBoardExistence(board);
 
-      if (!doesBoardExist) {
-        return enqueueSnackbar("This board does not exist.");
+      if (error) {
+        return enqueueSnackbar(error);
       }
 
       boardContext.addBoard(board);
+      enqueueSnackbar(`Board ${board} added.`);
       closeDialog();
-      enqueueSnackbar("Board added.");
     } catch (error) {
       console.error(error);
-      enqueueSnackbar("Error checking board existence.");
+      enqueueSnackbar(`Error checking board ${board} existence.`);
     }
   }
 
@@ -96,7 +96,7 @@ export function AddBoardDialog() {
           onSubmit={handleDialogFormSubmit}
           className="modal-backdrop bg-neutral-950 opacity-60"
         >
-          <button>Close dialog</button>
+          <button>close</button>
         </form>
       </dialog>
     </div>
